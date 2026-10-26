@@ -1,4 +1,5 @@
 import { hash32 } from './hash';
+import { NOMES_PERSONALIZADOS } from './nomes-personalizados';
 
 export interface PersonName {
   name: string;
@@ -25,8 +26,11 @@ const M = [
 ];
 
 export const NAME_POOL: readonly PersonName[] = Object.freeze(
-  // Intercala para que nomes vizinhos no pool alternem a dica visual.
-  F.flatMap((f, i) => [{ name: f, look: 'f' as const }, ...(M[i] ? [{ name: M[i], look: 'm' as const }] : [])]),
+  NOMES_PERSONALIZADOS.length > 0
+    ? // Lista da agência (shared/nomes-personalizados.ts): todos com a aparência masculina.
+      NOMES_PERSONALIZADOS.map((name) => ({ name, look: 'm' as const }))
+    : // Intercala para que nomes vizinhos no pool alternem a dica visual.
+      F.flatMap((f, i) => [{ name: f, look: 'f' as const }, ...(M[i] ? [{ name: M[i], look: 'm' as const }] : [])]),
 );
 
 /**
